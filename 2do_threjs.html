@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Segundo ejercicio</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <script type="text/javascript" src="libs/three.js"></script>
+
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000)
+        var renderer = new THREE.WebGLRenderer();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        // Añadimos la salida de la renderización al elemento HTML
+        document.body.appendChild(renderer.domElement);
+       
+        //renderizar la escena
+        var planeGeometry = new THREE.PlaneGeometry(60,20);
+        var planeMaterial = new THREE.MeshBasicMaterial({color:0xaf50ff});
+        var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        //Rotamos 90°  el plane  sobre el eje X
+        plane.rotation.x=-0.5*Math.PI;
+        plane.position.x=0;
+        plane.position.y=0;
+        plane.position.z=0;
+        //agregamos el plano a la escena 
+        scene.add(plane);
+
+        // ejes de posicionamiento
+        var axes = new THREE.AxesHelper(20);
+        scene.add(axes);
+
+        // ESFERA GEOMÉTRICA
+        var sphereGeometry = new THREE.SphereGeometry(5,5,5);
+        var sphereMaterial = new THREE.MeshBasicMaterial({color:0xff0000});
+        var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+        
+        sphere.position.x = 8;
+        sphere.position.y = 8;
+        sphere.position.z = 3;
+       
+        scene.add(sphere);
+
+        //CUBO GEOMÉTRICO
+        var cubeGeometry = new THREE.CubeGeometry(4,4,4);
+        var cubeMaterial = new THREE.MeshBasicMaterial({color:0xaaffcc});
+        var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
+        
+        cube.position.x = -8;
+        cube.position.y = 3;
+        cube.position.z =0
+
+        scene.add(cube);
+
+        //Posicionamos y apuntamos la camara al centro de la escena
+        camera.position.x=-30;
+        camera.position.y=40;
+        camera.position.z=30;
+        camera.lookAt(plane.position);
+        scene.add(camera); 
+
+       
+
+        
+            function anim(){
+                requestAnimationFrame(anim);
+                //plane.rotation.x += 0.2;
+                //camera.rotation.z += 0.01;
+                cube.rotation.y += 0.2;
+                sphere.rotation.x += 1.2;
+                renderer.render(scene,camera);
+            };
+            anim();
+         
+
+    </script>
+
+</body>
+
+</html>
