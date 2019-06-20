@@ -31,10 +31,14 @@
         // Añadimos la salida de la renderización al elemento HTML
         document.body.appendChild(renderer.domElement);
        
-        //renderizar la escena
+//////////////////////////////// ELEMENTS   /////////////////////////////////////////7
+        
+        // PLANO GEOMÉTRICO
         var planeGeometry = new THREE.PlaneGeometry(60,20);
-        var planeMaterial = new THREE.MeshBasicMaterial({color:0xaf50ff});
+        var planeMaterial = new THREE.MeshLambertMaterial({color:0xffffff});
         var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.receiveShadow = true; // indicamos que el plano es un receptor de sombra
+
         //Rotamos 90°  el plane  sobre el eje X
         plane.rotation.x=-0.5*Math.PI;
         plane.position.x=0;
@@ -44,50 +48,61 @@
         scene.add(plane);
 
         // ejes de posicionamiento
-        var axes = new THREE.AxesHelper(20);
+        var axes = new THREE.AxesHelper(30);
         scene.add(axes);
 
         // ESFERA GEOMÉTRICA
         var sphereGeometry = new THREE.SphereGeometry(5,5,5);
-        var sphereMaterial = new THREE.MeshBasicMaterial({color:0xff0000});
-        var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
-        
+        var sphereMaterial = new THREE.MeshLambertMaterial({color:0xffff00});
+        var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);       
+        sphere.castShadow =true;
         sphere.position.x = 8;
-        sphere.position.y = 8;
-        sphere.position.z = 3;
-       
+        sphere.position.y = 3;
+        sphere.position.z = 3;       
         scene.add(sphere);
 
         //CUBO GEOMÉTRICO
         var cubeGeometry = new THREE.CubeGeometry(4,4,4);
-        var cubeMaterial = new THREE.MeshBasicMaterial({color:0xaaffcc});
-        var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
-        
+        var cubeMaterial = new THREE.MeshLambertMaterial({color:0x00ffcc});
+        var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);        
+        cube.castShadow=true;// emite sombra
         cube.position.x = -8;
         cube.position.y = 3;
-        cube.position.z =0
-
+        cube.position.z =0;
         scene.add(cube);
 
+        // añadimos spotLight
+        var spotLight = new THREE.SpotLight(0xfffff); // creamos una una luz y blanca
+        spotLight.position.set(-40,40,0); // usamos el método .set para establecer la posición de nuesta luz
+        scene.add(spotLight);//la agregamoa nuetra escena
+
+/////////////////////////////////  END ELEMENTS //////////////////////////////   
+
         //Posicionamos y apuntamos la camara al centro de la escena
-        camera.position.x=-30;
-        camera.position.y=40;
+        camera.position.x=-20;
+        camera.position.y=30;
         camera.position.z=30;
         camera.lookAt(plane.position);
         scene.add(camera); 
 
        
+        function anim(){
+            requestAnimationFrame(anim);
+            //plane.rotation.x += 0.2;
+            //camera.rotation.z += 0.01;
+            //sphere.rotation.y -= 0.02;            
+            cube.rotation.z +=0.01;
+            cube.rotation.x +=0.01;
+            cube.rotation.y += 0.01;
 
-        
-            function anim(){
-                requestAnimationFrame(anim);
-                //plane.rotation.x += 0.2;
-                //camera.rotation.z += 0.01;
-                cube.rotation.y += 0.2;
-                sphere.rotation.x += 1.2;
-                renderer.render(scene,camera);
-            };
-            anim();
+            // Rendrizamos la escena
+            renderer.render(scene,camera);
+            renderer.shadowMapEnabled=true;
+           
+        };
+        anim();
+
+      
          
 
     </script>

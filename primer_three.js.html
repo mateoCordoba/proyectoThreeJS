@@ -55,9 +55,9 @@
 
         //creamos un cámara que define desde donde vamos a mirar-
         var camera = new THREE.PerspectiveCamera(
-            45,
+            45, // campo de visión en grados
             window.innerWidth / window.innerHeight,//propporción
-            0.1, 1000 // campo de visión: cerca,lejos
+            0.1, 1000 // límite cerca,lejos
         );
         scene.add(camera);
 

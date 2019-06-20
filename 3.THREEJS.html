@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tercer ejercicio </title>
+        <meta charset="utf-8">
+        <style>
+            body {
+                margin: 0;
+            }
+
+            canvas {
+                width: 100%;
+                height: 100%;
+            }
+
+        </style>
+    </head>
+    <body>
+        
+        <script type="text/javascript" src="libs/three.js" ></script>
+        <script type="text/javascript" src="libs/stats.js"></script>
+        <div id=salida>
+
+        </div>
+        <script>
+            var stats = initStats();
+
+            var scene = new THREE.Scene();            
+            
+            var camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);
+            
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth,window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+            ///////////////////Elements//////////////////////////////
+            var axes = new THREE.AxesHelper(20);
+            scene.add(axes);
+            
+            var spotLight = new THREE.SpotLight(0xffffff);
+            spotLight.position.set(10, 30, 15);
+            scene.add(spotLight);
+
+            
+            
+            // plano Geométrico
+            var planeGeometry = new THREE.PlaneGeometry(60,30);
+            var planeMaterial = new THREE.MeshLambertMaterial({color:0xffffff});
+            var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+            plane.rotation.x=-0.5*Math.PI;
+            plane.position.z=0;
+            plane.position.x=0;
+            plane.position.y=0;
+            
+            scene.add(plane);
+
+
+            var torusGeometry = new THREE.TorusGeometry (10,3,16,100);
+            var torusMaterial = new THREE.MeshLambertMaterial({color:0x000fff});
+            var torus = new THREE.Mesh(torusGeometry,torusMaterial);
+            torus.position.y =10;
+            torus.position.x =0;
+            torus.position.z =0;
+            scene.add(torus);
+
+            var torusGeometry2 = new THREE.TorusGeometry (10,3,16,100);
+            var torus2 = new THREE.Mesh(torusGeometry,torusMaterial);
+            torus2.position.y =10;
+            torus2.position.x =0;
+            torus2.position.z =0;
+            torus2.rotation.y = 90;
+            scene.add(torus2);                    
+
+            //////////////////END ELEMENTS//////////////////////////
+            camera.position.x = -30;
+            camera.position.y = 35;
+            camera.position.z = 40;
+            camera.lookAt(plane.position);
+
+            
+            function anim(){
+                stats.update();
+
+                requestAnimationFrame(anim);
+                //camera.rotation.z +=0.05;
+                //torus.rotation.z+=0.02;
+                //torus.rotation.x+=0.02;
+                torus.rotation.y+=0.2;
+                torus2.rotation.z-=0.02;
+                torus2.rotation.x-=0.02;
+                torus2.rotation.y-=0.2;
+                //plane.rotation.y+=0.02;
+                //console.log(plane.position);
+            
+                renderer.render(scene,camera);
+            //  renderer.shadowMapEnabled=true;
+           
+            };
+            anim();
+
+            function initStats(){
+                var stats = new Stats();
+                var salida = document.getElementById("salida");
+                stats.setMode(0); // [0]Frames por segundo(fps)  [1]milisegundos (ms)
+                stats.domElement.style.left = '0px';
+                stats.domElement.style.top = '0px';
+                salida.append(stats.domElement);
+
+                return stats;
+            }
+
+
+        </script>
+    </body>
+
+</html>
