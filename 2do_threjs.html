@@ -18,10 +18,15 @@
     </style>
 </head>
 <body>
+    <div id="salida">
+
+    </div>
 
     <script type="text/javascript" src="libs/three.js"></script>
-
+    <script type="text/javaScript" src="libs/stats.js"></script>
     <script>
+        var stats = initStats();
+
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000)
         var renderer = new THREE.WebGLRenderer();
@@ -88,6 +93,7 @@
        
         function anim(){
             requestAnimationFrame(anim);
+            stats.update();
             //plane.rotation.x += 0.2;
             //camera.rotation.z += 0.01;
             //sphere.rotation.y -= 0.02;            
@@ -101,6 +107,17 @@
            
         };
         anim();
+
+        function initStats(){
+            var stats = new Stats();
+            var salida = document.getElementById('salida');
+            stats.setMode(0);
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            salida.append(stats.domElement);
+            return stats;
+
+        }
 
       
          
